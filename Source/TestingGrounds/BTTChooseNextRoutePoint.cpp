@@ -8,7 +8,7 @@
 EBTNodeResult::Type UBTTChooseNextRoutePoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) {
 	UBlackboardComponent* Blackboard = OwnerComp.GetBlackboardComponent();
 
-	// Get the patrol points from a PatrollingGuard
+	// Get the patrol points from a PatrolRouteComponent
 	UPatrolRouteComponent* PatrolRouteComponent = OwnerComp.GetAIOwner()->GetPawn()->FindComponentByClass<UPatrolRouteComponent>();
 	if (!ensure(PatrolRouteComponent)) { return EBTNodeResult::Failed; }
 	TArray<ATargetPoint*> PatrolPoints = PatrolRouteComponent->GetPatrolPoints();
