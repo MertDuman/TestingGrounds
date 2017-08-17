@@ -40,7 +40,7 @@ void AGun::OnFire() {
 		UWorld* const World = GetWorld();
 		if (World != NULL) {
 			// Get the spawn transforms
-			const FRotator SpawnRotation = FP_Gun->GetSocketRotation(FName("Muzzle"));
+			const FRotator SpawnRotation = GetWorld()->GetFirstPlayerController()->GetControlRotation(); //FP_Gun->GetSocketRotation(FName("Muzzle"));
 			const FVector SpawnLocation = FP_Gun->GetSocketLocation(FName("Muzzle"));
 
 			//Set Spawn Collision Handling Override
