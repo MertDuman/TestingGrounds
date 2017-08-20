@@ -17,7 +17,7 @@ AGun::AGun()
 	FP_Gun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
 	FP_Gun->bCastDynamicShadow = false;
 	FP_Gun->CastShadow = false;
-	FP_Gun->SetupAttachment(RootComponent);
+	SetRootComponent(FP_Gun);
 }
 
 // Called when the game starts or when spawned
