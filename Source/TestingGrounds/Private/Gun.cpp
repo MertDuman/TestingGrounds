@@ -4,6 +4,7 @@
 #include "TestingGroundsProjectile.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/SphereComponent.h"
 #include "Animation/AnimInstance.h"
 
 
@@ -50,7 +51,7 @@ void AGun::OnFire() {
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 			// Spawn the projectile at the muzzle
-			World->SpawnActor<ATestingGroundsProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+			ATestingGroundsProjectile* Projectile = World->SpawnActor<ATestingGroundsProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 		}
 	}
 
