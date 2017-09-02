@@ -5,6 +5,8 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "GameFramework/Controller.h"
+#include "AIController.h"
 #include "Gun.h"
 
 
@@ -36,8 +38,15 @@ void AThirdPersonCharacter::BeginPlay()
 	
 	if (!ensure(GunBlueprint)) { return; }
 	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
-	Gun->AttachToComponent(MeshArms, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-	Gun->AnimInstance = MeshArms->GetAnimInstance();
+
+	/* Correctly attach the Gun: AI or Player */
+	if (GetController()->GetClass()->IsChildOf<AAIController>()) {
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), FName("GripPoint"));
+		Gun->AnimInstance = GetMesh()->GetAnimInstance();
+	} else {
+		Gun->AttachToComponent(MeshArms, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+		Gun->AnimInstance = MeshArms->GetAnimInstance();
+	}
 }
 
 // Called every frame
@@ -51,11 +60,12 @@ void AThirdPersonCharacter::Tick(float DeltaTime)
 void AThirdPersonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AThirdPersonCharacter::PullTrigger);
 }
 
-void AThirdPersonCharacter::Fire() {
+void AThirdPersonCharacter::PullTrigger() {
 	if(!Gun) { return; }
 	Gun->OnFire();
+
 }
 
