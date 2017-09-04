@@ -40,12 +40,12 @@ void AThirdPersonCharacter::BeginPlay()
 	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
 
 	/* Correctly attach the Gun: AI or Player */
-	if (GetController()->GetClass()->IsChildOf<AAIController>()) {
-		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), FName("GripPoint"));
-		Gun->AnimInstance = GetMesh()->GetAnimInstance();
-	} else {
+	if (IsPlayerControlled()) { // GetController()->GetClass()->IsChildOf<AAIController>()
 		Gun->AttachToComponent(MeshArms, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 		Gun->AnimInstance = MeshArms->GetAnimInstance();
+	} else {
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), FName("GripPoint"));
+		Gun->AnimInstance = GetMesh()->GetAnimInstance();
 	}
 }
 
@@ -61,6 +61,12 @@ void AThirdPersonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AThirdPersonCharacter::PullTrigger);
+}
+
+void AThirdPersonCharacter::UnPossessed() {
+	Super::UnPossessed();
+	if (!Gun) { return; }
+	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), FName("GripPoint"));
 }
 
 void AThirdPersonCharacter::PullTrigger() {
