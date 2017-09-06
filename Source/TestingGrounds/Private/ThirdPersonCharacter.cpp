@@ -42,10 +42,10 @@ void AThirdPersonCharacter::BeginPlay()
 	/* Correctly attach the Gun: AI or Player */
 	if (IsPlayerControlled()) { // GetController()->GetClass()->IsChildOf<AAIController>()
 		Gun->AttachToComponent(MeshArms, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-		Gun->AnimInstance = MeshArms->GetAnimInstance();
+		Gun->FirstPersonAnimInstance = MeshArms->GetAnimInstance();
 	} else {
 		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), FName("GripPoint"));
-		Gun->AnimInstance = GetMesh()->GetAnimInstance();
+		Gun->ThirdPersonAnimInstance = GetMesh()->GetAnimInstance();
 	}
 }
 
@@ -53,7 +53,6 @@ void AThirdPersonCharacter::BeginPlay()
 void AThirdPersonCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input

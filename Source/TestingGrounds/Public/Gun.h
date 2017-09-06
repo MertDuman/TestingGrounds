@@ -31,13 +31,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	class UAnimMontage* FirstPersonFireAnimation;
 
+	/** AnimInstance to play the animation */
+	UPROPERTY()
+	class UAnimInstance* FirstPersonAnimInstance;
+
 	/** AnimMontage to play each time we fire for TP */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	class UAnimMontage* ThirdPersonFireAnimation;
 
 	/** AnimInstance to play the animation */
-	UPROPERTY(VisibleAnywhere, Category = Gameplay)
-	class UAnimInstance* AnimInstance;
+	UPROPERTY()
+	class UAnimInstance* ThirdPersonAnimInstance;
 
 	/** Fires a projectile. */
 	UFUNCTION(BlueprintCallable, Category = Combat)
