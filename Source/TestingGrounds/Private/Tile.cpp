@@ -18,7 +18,7 @@ void ATile::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	CastSphere(GetActorLocation(), 300);
+	CastSphere(GetActorLocation() + FVector(2000, 0, 0), 300);
 }
 
 // Called every frame
@@ -59,7 +59,7 @@ bool ATile::CastSphere(FVector Location, float Radius) {
 		Location,
 		Location,
 		FQuat::Identity,
-		ECollisionChannel::ECC_Camera,
+		ECollisionChannel::ECC_GameTraceChannel2, // SpawnChannel
 		FCollisionShape::MakeSphere(Radius)
 	);
 
