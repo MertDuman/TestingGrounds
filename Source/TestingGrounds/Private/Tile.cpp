@@ -44,7 +44,9 @@ void ATile::PlaceActors(TSubclassOf<AActor> ActorToSpawn, int32 MinSpawnCount, i
 		bool Found = FindEmptyLocationInTile( out_SpawnPoint, Radius);
 
 		if (Found) {
-			PlaceActor(ActorToSpawn, out_SpawnPoint);
+			// Generate a random yaw rotation
+			float RandYawRotation = FMath::RandRange(-180.f, 180.f);
+			PlaceActor(ActorToSpawn, out_SpawnPoint, FRotator(0, RandYawRotation, 0));
 		}		
 	}
 }
@@ -109,12 +111,12 @@ bool ATile::CastSphere(FVector Location, float Radius) {
 	@param ActorToSpawn
 	@param SpawnPoint
 */
-void ATile::PlaceActor(TSubclassOf<AActor> ActorToSpawn, FVector SpawnPoint) {
+void ATile::PlaceActor(TSubclassOf<AActor> ActorToSpawn, FVector SpawnPoint, FRotator SpawnRotation) {
 	AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(
 		ActorToSpawn,
 		SpawnPoint,
-		FRotator(0)
-		);
+		SpawnRotation
+	);
 
 	if (!SpawnedActor) { return; }
 	/* Keep the World Transform and not Relative Transform because we correctly spawn Actors in the World. */

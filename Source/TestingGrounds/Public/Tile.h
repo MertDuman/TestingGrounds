@@ -31,6 +31,6 @@ private:
 
 	bool FindEmptyLocationInTile( FVector& OutLocation, float Radius);
 
-	void PlaceActor(TSubclassOf<AActor> ActorToSpawn, FVector SpawnPoint);
+	void PlaceActor(TSubclassOf<AActor> ActorToSpawn, FVector SpawnPoint, FRotator SpawnRotation);
 	
 };
