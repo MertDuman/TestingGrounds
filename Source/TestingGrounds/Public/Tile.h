@@ -23,8 +23,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable, Category=Spawn)
+	UFUNCTION(BlueprintCallable, Category = "Spawn")
 	void PlaceActors(TSubclassOf<AActor> ActorToSpawn, int32 MinSpawnCount = 1, int32 MaxSpawnCount = 1, float Radius = 300.f);
+
+	UFUNCTION(BlueprintCallable, Category = "Pool")
+	void SetPool(class UActorPoolComponent* InPool);
 
 private:
 	bool CastSphere( FVector Location, float Radius = 300);
@@ -32,5 +35,7 @@ private:
 	bool FindEmptyLocationInTile( FVector& OutLocation, float Radius);
 
 	void PlaceActor(TSubclassOf<AActor> ActorToSpawn, FVector SpawnPoint, FRotator SpawnRotation);
+
+	UActorPoolComponent* Pool;
 	
 };

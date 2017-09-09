@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
 #include "Animation/AnimInstance.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 
 // Sets default values
@@ -52,6 +53,8 @@ void AGun::OnFire() {
 
 			// Spawn the projectile at the muzzle
 			ATestingGroundsProjectile* Projectile = World->SpawnActor<ATestingGroundsProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+
+			//Projectile->GetProjectileMovement()->Activate(); No need, auto activate.
 		}
 	}
 

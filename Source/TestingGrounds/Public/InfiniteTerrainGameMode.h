@@ -18,7 +18,13 @@ public:
 	AInfiniteTerrainGameMode();
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "Bounds Pool")
 	void FindAllNavMeshBoundsVolumes();
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pool")
+	class UActorPoolComponent* NavMeshBoundsVolumePool;
+
 	
 private:
 	void AddToPool(class ANavMeshBoundsVolume* VolumeToAdd);

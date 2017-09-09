@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "ActorPoolComponent.h"
 
 
 // Sets default values
@@ -24,6 +25,10 @@ void ATile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ATile::SetPool(UActorPoolComponent * InPool) {
+	Pool = InPool;
 }
 
 /**
