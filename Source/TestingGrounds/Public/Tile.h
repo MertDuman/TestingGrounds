@@ -44,6 +44,8 @@ private:
 
 	void PlaceActor(TSubclassOf<AActor> ActorToSpawn, FVector SpawnPoint, FRotator SpawnRotation);
 
+	void PlaceAI(TSubclassOf<APawn> PawnToSpawn, FVector SpawnPoint, FRotator SpawnRotation);
+
 	UActorPoolComponent* Pool;
 
 	AActor* NavMeshBoundsVolume;

@@ -41,7 +41,8 @@ void ATile::GetNavMeshFromPoolAndReposition() {
 	NavMeshBoundsVolume = Pool->Checkout();
 	if (!NavMeshBoundsVolume) { 
 		UE_LOG(LogTemp, Warning, TEXT("[%s - SetNavMeshFromPool] nullptr volume."), *GetName());
-		return; }
+		return; 
+	}
 	UE_LOG(LogTemp, Warning, TEXT("[%s - SetNavMeshFromPool] Checked out volume: %s"), *GetName(), *NavMeshBoundsVolume->GetName());
 	NavMeshBoundsVolume->SetActorLocation(GetActorLocation() + FVector(2000, 0, 0));
 	GetWorld()->GetNavigationSystem()->Build();
@@ -67,14 +68,19 @@ void ATile::PlaceActors(TSubclassOf<AActor> ActorToSpawn, int32 MinSpawnCount, i
 	int32 SpawnCount = FMath::RandRange(MinSpawnCount, MaxSpawnCount);
 
 	for (size_t i = 0; i < SpawnCount; i++) {
+		// Generate a random yaw rotation
+		float RandYawRotation = FMath::RandRange(-180.f, 180.f);
+
 		FVector out_SpawnPoint;
 		bool Found = FindEmptyLocationInTile( out_SpawnPoint, Radius);
-
-		if (Found) {
-			// Generate a random yaw rotation
-			float RandYawRotation = FMath::RandRange(-180.f, 180.f);
+		
+		if (Found && !ActorToSpawn->IsChildOf<APawn>()) {			
 			PlaceActor(ActorToSpawn, out_SpawnPoint, FRotator(0, RandYawRotation, 0));
-		}		
+		}
+		if (Found && ActorToSpawn->IsChildOf<APawn>()) {
+			TSubclassOf<APawn> PawnToSpawn = ActorToSpawn;
+			PlaceAI(PawnToSpawn, out_SpawnPoint, FRotator(0, RandYawRotation, 0));
+		}
 	}
 }
 
@@ -148,5 +154,18 @@ void ATile::PlaceActor(TSubclassOf<AActor> ActorToSpawn, FVector SpawnPoint, FRo
 	if (!SpawnedActor) { return; }
 	/* Keep the World Transform and not Relative Transform because we correctly spawn Actors in the World. */
 	SpawnedActor->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
+}
+
+void ATile::PlaceAI(TSubclassOf<APawn> PawnToSpawn, FVector SpawnPoint, FRotator SpawnRotation) {
+	APawn* SpawnedPawn = GetWorld()->SpawnActor<APawn>(
+		PawnToSpawn,
+		SpawnPoint,
+		SpawnRotation
+		);
+
+	if (!SpawnedPawn) { return; }
+	/* Keep the World Transform and not Relative Transform because we correctly spawn Actors in the World. */
+	SpawnedPawn->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
+	SpawnedPawn->SpawnDefaultController();
 }
 
