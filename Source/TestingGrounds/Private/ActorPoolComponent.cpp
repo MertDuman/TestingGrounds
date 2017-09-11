@@ -19,14 +19,18 @@ void UActorPoolComponent::BeginPlay()
 }
 
 AActor* UActorPoolComponent::Checkout() {
-	return nullptr;
+	if ( Pool.Num() == 0) { 
+		UE_LOG(LogTemp, Warning, TEXT("[%s - Checkout()] Pool is empty."), *GetName());
+		return nullptr; 
+	}
+	return Pool.Pop();
 }
 
 void UActorPoolComponent::Return(AActor* ActorToReturn) {
-
+	Pool.Push( ActorToReturn);
 }
 
 void UActorPoolComponent::Add(AActor* ActorToAdd) {
-
+	Return( ActorToAdd);
 }
 

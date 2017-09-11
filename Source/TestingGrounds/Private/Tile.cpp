@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "AI/Navigation/NavigationSystem.h"
 #include "ActorPoolComponent.h"
 
 
@@ -20,15 +21,36 @@ void ATile::BeginPlay()
 	Super::BeginPlay();
 }
 
+void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason) 
+{
+	Super::EndPlay(EndPlayReason);
+
+}
+
 // Called every frame
 void ATile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void ATile::SetPool(UActorPoolComponent * InPool) {
 	Pool = InPool;
+}
+
+void ATile::GetNavMeshFromPoolAndReposition() {
+	NavMeshBoundsVolume = Pool->Checkout();
+	if (!NavMeshBoundsVolume) { 
+		UE_LOG(LogTemp, Warning, TEXT("[%s - SetNavMeshFromPool] nullptr volume."), *GetName());
+		return; }
+	UE_LOG(LogTemp, Warning, TEXT("[%s - SetNavMeshFromPool] Checked out volume: %s"), *GetName(), *NavMeshBoundsVolume->GetName());
+	NavMeshBoundsVolume->SetActorLocation(GetActorLocation() + FVector(2000, 0, 0));
+	GetWorld()->GetNavigationSystem()->Build();
+}
+
+void ATile::ReturnNavMeshToPool() {
+	if (!ensure(Pool)) { return; }
+	UE_LOG(LogTemp, Warning, TEXT("[%s - EndPlay] Returned Volume."), *GetName());
+	Pool->Return(NavMeshBoundsVolume);
 }
 
 /**

@@ -6,7 +6,7 @@
 #include "EngineUtils.h"
 
 AInfiniteTerrainGameMode::AInfiniteTerrainGameMode() {
-	NavMeshBoundsVolumePool = CreateDefaultSubobject<UActorPoolComponent>(FName("NavMeshBoundsVolumePool"));
+	ActorPoolComponent = CreateDefaultSubobject<UActorPoolComponent>(FName("ActorPoolComponent"));
 }
 
 void AInfiniteTerrainGameMode::FindAllNavMeshBoundsVolumes() {
@@ -19,7 +19,7 @@ void AInfiniteTerrainGameMode::FindAllNavMeshBoundsVolumes() {
 
 void AInfiniteTerrainGameMode::AddToPool(ANavMeshBoundsVolume * VolumeToAdd) {
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *VolumeToAdd->GetName());
-	NavMeshBoundsVolumePool->Add(VolumeToAdd);
+	ActorPoolComponent->Add(VolumeToAdd);
 }
 
 
